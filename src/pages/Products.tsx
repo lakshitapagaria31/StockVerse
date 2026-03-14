@@ -62,7 +62,7 @@ const Products: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       <PageHeader
         title="Products"
         description="Manage your product inventory"
@@ -104,42 +104,84 @@ const Products: React.FC = () => {
       />
 
       {/* Filters */}
-      <div className="mb-4 flex flex-wrap gap-3">
-        <div className="relative flex-1 min-w-[200px] max-w-sm">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={search}
-            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-            placeholder="Search products..."
-            className="pl-9 h-9"
-            maxLength={200}
-          />
-        </div>
-        <Select value={categoryFilter} onValueChange={(v) => { setCategoryFilter(v); setPage(1); }}>
-          <SelectTrigger className="w-[150px] h-9 text-sm">
-            <SelectValue placeholder="Category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All</SelectItem>
-            <SelectItem value="electronics">Electronics</SelectItem>
-            <SelectItem value="accessories">Accessories</SelectItem>
-            <SelectItem value="furniture">Furniture</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+<div className="flex items-center justify-between gap-4 bg-white border rounded-xl p-4 shadow-sm">
 
-      <DataTable
-        columns={[
-          { key: "name", label: "Product" },
-          { key: "sku", label: "SKU", render: (r: Product) => <span className="font-mono text-xs text-muted-foreground">{r.sku}</span> },
-          { key: "category", label: "Category" },
-          { key: "unitOfMeasure", label: "UoM" },
-          { key: "totalStock", label: "Stock", render: (r: Product) => <span className={`font-medium ${stockVariant(r.totalStock)}`}>{r.totalStock}</span> },
-          { key: "location", label: "Location" },
-        ]}
-        data={paginated}
-        onRowClick={(r) => navigate(`/products/${r.id}`)}
-      />
+<div className="flex gap-3 flex-1 max-w-md">
+
+  <div className="relative flex-1">
+    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+    <Input
+      value={search}
+      onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+      placeholder="Search products..."
+      className="pl-9 h-9 bg-white"
+    />
+  </div>
+
+  <Select
+    value={categoryFilter}
+    onValueChange={(v) => { setCategoryFilter(v); setPage(1); }}
+  >
+    <SelectTrigger className="w-[140px] h-9">
+      <SelectValue placeholder="Category" />
+    </SelectTrigger>
+
+    <SelectContent>
+      <SelectItem value="all">All</SelectItem>
+      <SelectItem value="electronics">Electronics</SelectItem>
+      <SelectItem value="accessories">Accessories</SelectItem>
+      <SelectItem value="furniture">Furniture</SelectItem>
+    </SelectContent>
+
+  </Select>
+
+</div>
+
+<p className="text-sm text-muted-foreground">
+  {filtered.length} products
+</p>
+
+</div>
+
+{/* Table */}
+<div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+<div className="mt-4 rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden"></div>
+  <DataTable
+    columns={[
+      { key: "name", label: "Product", sortable: true },
+    
+      {
+        key: "sku",
+        label: "SKU",
+        sortable: true,
+        render: (r: Product) => (
+          <span className="font-mono text-xs text-muted-foreground">
+            {r.sku}
+          </span>
+        ),
+      },
+    
+      { key: "category", label: "Category", sortable: true },
+      { key: "unitOfMeasure", label: "UoM", sortable: true },
+    
+      {
+        key: "totalStock",
+        label: "Stock",
+        sortable: true,
+        render: (r: Product) => (
+          <span className={`font-semibold ${stockVariant(r.totalStock)}`}>
+            {r.totalStock}
+          </span>
+        ),
+      },
+    
+      { key: "location", label: "Location" },
+    ]}
+    data={paginated}
+    onRowClick={(r) => navigate(`/products/${r.id}`)}
+  />
+
+</div>
 
       {/* Pagination */}
       {totalPages > 1 && (
