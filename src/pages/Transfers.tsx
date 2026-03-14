@@ -89,10 +89,10 @@ const Transfers: React.FC = () => {
           { key: "date", label: "Date" },
           { key: "sourceLocation", label: "From" },
           { key: "destinationLocation", label: "To" },
-          { key: "items", label: "Items", render: (r) => <span>{(r.items as Transfer["items"]).map(i => `${i.product} (${i.quantity})`).join(", ")}</span> },
-          { key: "status", label: "Status", render: (r) => <StatusBadge status={r.status as string} /> },
+          { key: "items", label: "Items", render: (r: Transfer) => <span>{r.items.map(i => `${i.product} (${i.quantity})`).join(", ")}</span> },
+          { key: "status", label: "Status", render: (r: Transfer) => <StatusBadge status={r.status} /> },
         ]}
-        data={transfers as unknown as Record<string, unknown>[]}
+        data={transfers}
       />
     </div>
   );

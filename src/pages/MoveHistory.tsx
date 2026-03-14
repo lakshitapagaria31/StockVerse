@@ -40,21 +40,21 @@ const MoveHistory: React.FC = () => {
       </div>
       <DataTable
         columns={[
-          { key: "timestamp", label: "Timestamp", render: (r) => <span className="text-xs text-muted-foreground">{new Date(r.timestamp as string).toLocaleString()}</span> },
+          { key: "timestamp", label: "Timestamp", render: (r: StockMovement) => <span className="text-xs text-muted-foreground">{new Date(r.timestamp).toLocaleString()}</span> },
           { key: "product", label: "Product" },
-          { key: "operationType", label: "Type", render: (r) => {
+          { key: "operationType", label: "Type", render: (r: StockMovement) => {
             const colors: Record<string, string> = { Receipt: "text-success", Delivery: "text-primary", Transfer: "text-warning", Adjustment: "text-destructive" };
-            return <span className={`text-xs font-medium ${colors[r.operationType as string] || ""}`}>{r.operationType as string}</span>;
+            return <span className={`text-xs font-medium ${colors[r.operationType] || ""}`}>{r.operationType}</span>;
           }},
-          { key: "quantity", label: "Qty", render: (r) => {
-            const q = r.quantity as number;
+          { key: "quantity", label: "Qty", render: (r: StockMovement) => {
+            const q = r.quantity;
             return <span className={q > 0 ? "text-success font-medium" : "text-destructive font-medium"}>{q > 0 ? `+${q}` : q}</span>;
           }},
           { key: "sourceLocation", label: "From" },
           { key: "destinationLocation", label: "To" },
           { key: "performedBy", label: "By" },
         ]}
-        data={filtered as unknown as Record<string, unknown>[]}
+        data={filtered}
       />
     </div>
   );

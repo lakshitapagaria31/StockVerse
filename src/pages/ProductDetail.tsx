@@ -64,14 +64,14 @@ const ProductDetail: React.FC = () => {
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="rounded-lg border border-border bg-card p-4">
           <h3 className="mb-3 text-sm font-medium text-card-foreground">Stock by Location</h3>
-          <DataTable
-            columns={[
-              { key: "location", label: "Location" },
-              { key: "quantity", label: "Quantity", render: (r) => <span className="font-medium">{(r as {quantity: number}).quantity}</span> },
-            ]}
-            data={product.stockByLocation as unknown as Record<string, unknown>[]}
-            emptyMessage="No stock data"
-          />
+            <DataTable
+              columns={[
+                { key: "location", label: "Location" },
+                { key: "quantity", label: "Quantity", render: (r: { location: string; quantity: number }) => <span className="font-medium">{r.quantity}</span> },
+              ]}
+              data={product.stockByLocation}
+              emptyMessage="No stock data"
+            />
         </div>
         <div className="rounded-lg border border-border bg-card p-4">
           <h3 className="mb-3 text-sm font-medium text-card-foreground">Summary</h3>

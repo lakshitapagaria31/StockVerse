@@ -65,10 +65,10 @@ const Deliveries: React.FC = () => {
           { key: "customer", label: "Customer" },
           { key: "date", label: "Date" },
           { key: "warehouse", label: "Warehouse" },
-          { key: "items", label: "Items", render: (r) => <span>{(r.items as Delivery["items"]).map(i => `${i.product} (${i.quantity})`).join(", ")}</span> },
-          { key: "status", label: "Status", render: (r) => <StatusBadge status={r.status as string} /> },
+          { key: "items", label: "Items", render: (r: Delivery) => <span>{r.items.map(i => `${i.product} (${i.quantity})`).join(", ")}</span> },
+          { key: "status", label: "Status", render: (r: Delivery) => <StatusBadge status={r.status} /> },
         ]}
-        data={deliveries as unknown as Record<string, unknown>[]}
+        data={deliveries}
       />
     </div>
   );

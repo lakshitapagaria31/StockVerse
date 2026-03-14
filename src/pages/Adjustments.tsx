@@ -72,13 +72,13 @@ const Adjustments: React.FC = () => {
           { key: "location", label: "Location" },
           { key: "systemQuantity", label: "System Qty" },
           { key: "countedQuantity", label: "Counted Qty" },
-          { key: "difference", label: "Diff", render: (r) => {
-            const d = r.difference as number;
+          { key: "difference", label: "Diff", render: (r: Adjustment) => {
+            const d = r.difference;
             return <span className={d > 0 ? "text-success font-medium" : d < 0 ? "text-destructive font-medium" : ""}>{d > 0 ? `+${d}` : d}</span>;
           }},
-          { key: "status", label: "Status", render: (r) => <StatusBadge status={r.status as string} /> },
+          { key: "status", label: "Status", render: (r: Adjustment) => <StatusBadge status={r.status} /> },
         ]}
-        data={adjustments as unknown as Record<string, unknown>[]}
+        data={adjustments}
       />
     </div>
   );

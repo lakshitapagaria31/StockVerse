@@ -131,10 +131,10 @@ const Products: React.FC = () => {
       <DataTable
         columns={[
           { key: "name", label: "Product" },
-          { key: "sku", label: "SKU", render: (r) => <span className="font-mono text-xs text-muted-foreground">{r.sku}</span> },
+          { key: "sku", label: "SKU", render: (r: Product) => <span className="font-mono text-xs text-muted-foreground">{r.sku}</span> },
           { key: "category", label: "Category" },
           { key: "unitOfMeasure", label: "UoM" },
-          { key: "totalStock", label: "Stock", render: (r) => <span className={`font-medium ${stockVariant(r.totalStock)}`}>{r.totalStock}</span> },
+          { key: "totalStock", label: "Stock", render: (r: Product) => <span className={`font-medium ${stockVariant(r.totalStock)}`}>{r.totalStock}</span> },
           { key: "location", label: "Location" },
         ]}
         data={paginated}
