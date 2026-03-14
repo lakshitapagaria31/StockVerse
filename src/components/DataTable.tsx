@@ -8,7 +8,8 @@ interface DataTableProps<T> {
   emptyMessage?: string;
 }
 
-export function DataTable<T extends Record<string, unknown>>({ columns, data, onRowClick, emptyMessage = "No data found" }: DataTableProps<T>) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function DataTable<T extends Record<string, any>>({ columns, data, onRowClick, emptyMessage = "No data found" }: DataTableProps<T>) {
   return (
     <div className="overflow-x-auto rounded-lg border border-border">
       <table className="w-full text-sm">
