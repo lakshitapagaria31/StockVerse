@@ -1,5 +1,7 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
+from app.config import settings
 from app.database.connection import engine
 from app.database.models import Base
 from app.middleware.auth_middleware import AuthMiddleware
@@ -8,6 +10,13 @@ from app.routers import adjustments, auth, deliveries, products, receipts, trans
 
 app = FastAPI(title="StockVerse API", version="1.0.0")
 app.add_middleware(AuthMiddleware)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.resolved_cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.on_event("startup")

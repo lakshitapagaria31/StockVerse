@@ -17,6 +17,20 @@ class Settings(BaseSettings):
 
     otp_request_limit: int = 5
     otp_window_seconds: int = 900
+    otp_expiry_seconds: int = 30
+
+    smtp_host: str | None = None
+    smtp_port: int = 587
+    smtp_username: str | None = None
+    smtp_password: str | None = None
+    smtp_sender: str | None = None
+    smtp_use_tls: bool = True
+    cors_origins: str = (
+        "http://127.0.0.1:8080,"
+        "http://localhost:8080,"
+        "http://127.0.0.1:5173,"
+        "http://localhost:5173"
+    )
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
@@ -29,6 +43,11 @@ class Settings(BaseSettings):
             return self.prod_database_url
 
         return self.dev_database_url
+
+    @property
+    def resolved_cors_origins(self) -> list[str]:
+        origins = [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+        return origins or ["http://127.0.0.1:8080", "http://127.0.0.1:5173"]
 
 
 settings = Settings()

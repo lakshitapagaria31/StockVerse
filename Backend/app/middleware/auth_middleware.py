@@ -29,6 +29,9 @@ class AuthMiddleware(BaseHTTPMiddleware):
         request: Request,
         call_next: Callable[[Request], Awaitable[Response]],
     ) -> Response:
+        if request.method == "OPTIONS":
+            return await call_next(request)
+
         path = request.url.path
         if path in PUBLIC_EXACT_PATHS or path.startswith(PUBLIC_PATH_PREFIXES):
             return await call_next(request)
