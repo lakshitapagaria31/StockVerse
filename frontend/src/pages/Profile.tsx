@@ -35,9 +35,9 @@ const Profile: React.FC = () => {
           <h3 className="text-sm font-medium text-card-foreground mb-4">Theme Settings</h3>
           <div className="flex gap-2">
             {([
-              { value: "light" as const, icon: Sun, label: "Light" },
+              { value: "light" as const, icon: Sun, label: "White" },
               { value: "dark" as const, icon: Moon, label: "Dark" },
-              { value: "system" as const, icon: Monitor, label: "System" },
+              { value: "system" as const, icon: Monitor, label: "Default" },
             ]).map(({ value, icon: Icon, label }) => (
               <button
                 key={value}

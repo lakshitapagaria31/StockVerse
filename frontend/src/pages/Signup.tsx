@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Package } from "lucide-react";
 import { useAuthStore } from "@/store/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const Signup: React.FC = () => {
   const [name, setName] = useState("");
@@ -16,25 +16,26 @@ const Signup: React.FC = () => {
   const { signup } = useAuthStore();
   const navigate = useNavigate();
 
+  const isValidEmail = (value: string) => /^(?!\.)[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim() || !password) { toast.error("Please fill all fields"); return; }
+    if (!isValidEmail(email.trim())) { toast.error("Please enter a valid email address"); return; }
     if (password.length < 8) { toast.error("Password must be at least 8 characters"); return; }
     if (password !== confirmPassword) { toast.error("Passwords don't match"); return; }
     setLoading(true);
-    const success = await signup(name, email, password);
+    const result = await signup(name.trim(), email.trim(), password);
     setLoading(false);
-    if (success) navigate("/");
-    else toast.error("Signup failed");
+    if (result.success) navigate("/");
+    else toast.error(result.error ?? "Signup failed");
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary mb-3">
-            <Package className="h-5 w-5 text-primary-foreground" />
-          </div>
+          <BrandLogo className="mb-3" compact />
           <h1 className="text-xl font-semibold text-foreground">Create your account</h1>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">

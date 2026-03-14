@@ -1,9 +1,11 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Sun, Moon, Monitor } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 import { useAuthStore } from "@/store/auth";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/BrandLogo";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -11,27 +13,23 @@ interface AppLayoutProps {
 
 export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
 
       {/* Header */}
-      <header className="flex items-center justify-between border-b bg-white px-6 h-14">
+      <header className="flex h-14 items-center justify-between border-b bg-card px-6">
 
         {/* Left side */}
         <div className="flex items-center gap-8">
 
           {/* Logo */}
-          <div className="flex items-center gap-2 font-semibold text-gray-800">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm">
-              S
-            </div>
-            StockVerse
-          </div>
+          <BrandLogo compact />
 
           {/* Navigation Tabs */}
           <nav className="flex items-center gap-5 text-sm">
@@ -42,7 +40,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 "px-2 py-1 rounded-md transition",
                 isActive("/")
                   ? "bg-blue-50 text-blue-700 font-semibold"
-                  : "text-gray-500 hover:text-black"
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
               Dashboard
@@ -54,7 +52,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 "px-2 py-1 rounded-md transition",
                 location.pathname.startsWith("/operations")
                   ? "bg-blue-50 text-blue-700 font-semibold"
-                  : "text-gray-500 hover:text-black"
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
               Operations
@@ -66,7 +64,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 "px-2 py-1 rounded-md transition",
                 isActive("/products")
                   ? "bg-blue-50 text-blue-700 font-semibold"
-                  : "text-gray-500 hover:text-black"
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
               Stock
@@ -78,7 +76,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 "px-2 py-1 rounded-md transition",
                 isActive("/warehouses")
                   ? "bg-blue-50 text-blue-700 font-semibold"
-                  : "text-gray-500 hover:text-black"
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
               Warehouses
@@ -90,7 +88,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 "px-2 py-1 rounded-md transition",
                 isActive("/history")
                   ? "bg-blue-50 text-blue-700 font-semibold"
-                  : "text-gray-500 hover:text-black"
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
               Move History
@@ -102,7 +100,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 "px-2 py-1 rounded-md transition",
                 isActive("/settings")
                   ? "bg-blue-50 text-blue-700 font-semibold"
-                  : "text-gray-500 hover:text-black"
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
               Settings
@@ -115,32 +113,61 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         {/* Right side */}
         <div className="flex items-center gap-4">
 
-          {/* Theme Toggle */}
-          <button
-            onClick={() =>
-              setTheme(
-                theme === "dark"
-                  ? "light"
-                  : theme === "light"
-                  ? "system"
-                  : "dark"
-              )
-            }
-            className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-gray-100 transition"
-          >
-            {theme === "dark" ? (
-              <Moon className="h-4 w-4" />
-            ) : theme === "light" ? (
+          <div className="flex items-center gap-1 rounded-md border border-border p-1">
+            <button
+              type="button"
+              onClick={() => setTheme("light")}
+              className={cn(
+                "flex h-7 w-7 items-center justify-center rounded-sm",
+                theme === "light" ? "bg-accent text-accent-foreground" : "text-muted-foreground"
+              )}
+              aria-label="Light mode"
+              title="Light"
+            >
               <Sun className="h-4 w-4" />
-            ) : (
+            </button>
+            <button
+              type="button"
+              onClick={() => setTheme("dark")}
+              className={cn(
+                "flex h-7 w-7 items-center justify-center rounded-sm",
+                theme === "dark" ? "bg-accent text-accent-foreground" : "text-muted-foreground"
+              )}
+              aria-label="Dark mode"
+              title="Dark"
+            >
+              <Moon className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setTheme("system")}
+              className={cn(
+                "flex h-7 w-7 items-center justify-center rounded-sm",
+                theme === "system" ? "bg-accent text-accent-foreground" : "text-muted-foreground"
+              )}
+              aria-label="System mode"
+              title="Default"
+            >
               <Monitor className="h-4 w-4" />
-            )}
-          </button>
+            </button>
+          </div>
 
           {/* User */}
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-muted-foreground">
             {user?.name || "User"}
           </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              logout();
+              navigate("/login");
+            }}
+          >
+            Logout
+          </Button>
 
         </div>
 

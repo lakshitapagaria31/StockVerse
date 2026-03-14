@@ -28,11 +28,11 @@ def generate_otp(email: str) -> str:
 
     _otp_requests[email].append(now)
     otp = f"{random.randint(0, 999999):06d}"
-    _otp_cache[email] = (otp, now + 600)
+    _otp_cache[email] = (otp, now + settings.otp_expiry_seconds)
     return otp
 
 
-def verify_otp(email: str, otp: str) -> bool:
+def verify_otp(email: str, otp: str, *, consume: bool = True) -> bool:
     cached = _otp_cache.get(email)
     if not cached:
         return False
@@ -43,6 +43,6 @@ def verify_otp(email: str, otp: str) -> bool:
         return False
 
     is_valid = otp == expected_otp
-    if is_valid:
+    if is_valid and consume:
         _otp_cache.pop(email, None)
     return is_valid

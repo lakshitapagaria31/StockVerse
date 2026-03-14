@@ -2,7 +2,7 @@
 export const AUTH_TOKEN_STORAGE_KEY = "stockverse-auth-token";
 export const AUTH_USER_STORAGE_KEY = "stockverse-auth-user";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
+const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? "/api").replace(/\/$/, "");
 
 interface RequestOptions extends RequestInit {
   requiresAuth?: boolean;
@@ -19,6 +19,14 @@ interface AuthResponse {
   access_token: string;
   token_type: string;
   user: AuthUser;
+}
+
+interface ResetPasswordResponse {
+  message: string;
+  expires_in_seconds: number;
+  email_sent?: boolean;
+  otp?: string;
+  note?: string;
 }
 
 interface BackendProduct {
@@ -241,6 +249,24 @@ export const api = {
       }),
     login: (payload: { email: string; password: string }) =>
       request<AuthResponse>("/auth/login", {
+        method: "POST",
+        requiresAuth: false,
+        body: JSON.stringify(payload),
+      }),
+    requestPasswordResetOtp: (payload: { email: string }) =>
+      request<ResetPasswordResponse>("/auth/reset-password", {
+        method: "POST",
+        requiresAuth: false,
+        body: JSON.stringify(payload),
+      }),
+    verifyPasswordResetOtp: (payload: { email: string; otp: string }) =>
+      request<{ message: string }>("/auth/verify-otp", {
+        method: "POST",
+        requiresAuth: false,
+        body: JSON.stringify(payload),
+      }),
+    confirmPasswordReset: (payload: { email: string; otp: string; new_password: string }) =>
+      request<{ message: string }>("/auth/confirm-reset-password", {
         method: "POST",
         requiresAuth: false,
         body: JSON.stringify(payload),

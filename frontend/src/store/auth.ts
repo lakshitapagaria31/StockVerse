@@ -5,8 +5,8 @@ import { api, AUTH_TOKEN_STORAGE_KEY, AUTH_USER_STORAGE_KEY } from "@/services/a
 interface AuthState {
   isAuthenticated: boolean;
   user: { name: string; email: string } | null;
-  login: (email: string, _password: string) => Promise<boolean>;
-  signup: (name: string, email: string, _password: string) => Promise<boolean>;
+  login: (email: string, _password: string) => Promise<{ success: boolean; error?: string }>;
+  signup: (name: string, email: string, _password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
 }
 
@@ -22,9 +22,12 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, response.access_token);
       localStorage.setItem(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
       set({ isAuthenticated: true, user });
-      return true;
-    } catch {
-      return false;
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Login failed",
+      };
     }
   },
   signup: async (name, email, password) => {
@@ -34,9 +37,12 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, response.access_token);
       localStorage.setItem(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
       set({ isAuthenticated: true, user });
-      return true;
-    } catch {
-      return false;
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Signup failed",
+      };
     }
   },
   logout: () => {
