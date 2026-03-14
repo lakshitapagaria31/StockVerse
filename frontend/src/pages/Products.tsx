@@ -33,26 +33,26 @@ const Products: React.FC = () => {
   const totalPages = Math.ceil(filtered.length / perPage);
   const paginated = filtered.slice((page - 1) * perPage, page * perPage);
 
-  const handleCreate = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const name = (fd.get("name") as string).trim();
     const sku = (fd.get("sku") as string).trim();
     if (!name || !sku) { toast.error("Name and SKU are required"); return; }
     if (products.some(p => p.sku === sku)) { toast.error("Duplicate SKU"); return; }
-    const newProduct: Product = {
-      id: String(products.length + 1),
-      name,
-      sku,
-      category: fd.get("category") as string || "General",
-      unitOfMeasure: fd.get("uom") as string || "Unit",
-      totalStock: Number(fd.get("stock")) || 0,
-      location: "Warehouse A",
-      stockByLocation: [],
-    };
-    setProducts([...products, newProduct]);
-    setCreateOpen(false);
-    toast.success("Product created");
+    try {
+      const newProduct = await api.products.create({
+        name,
+        sku,
+        category: (fd.get("category") as string) || "General",
+        unitOfMeasure: (fd.get("uom") as string) || "Unit",
+      });
+      setProducts([newProduct, ...products]);
+      setCreateOpen(false);
+      toast.success("Product created");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to create product");
+    }
   };
 
   const stockVariant = (stock: number) => {

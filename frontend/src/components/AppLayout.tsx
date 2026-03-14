@@ -73,6 +73,18 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             </Link>
 
             <Link
+              to="/warehouses"
+              className={cn(
+                "px-2 py-1 rounded-md transition",
+                isActive("/warehouses")
+                  ? "bg-blue-50 text-blue-700 font-semibold"
+                  : "text-gray-500 hover:text-black"
+              )}
+            >
+              Warehouses
+            </Link>
+
+            <Link
               to="/history"
               className={cn(
                 "px-2 py-1 rounded-md transition",

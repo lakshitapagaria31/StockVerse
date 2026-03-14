@@ -12,6 +12,7 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
+import Warehouses from "./pages/Warehouses";
 import ProductDetail from "./pages/ProductDetail";
 import Receipts from "./pages/Receipts";
 import Deliveries from "./pages/Deliveries";
@@ -43,6 +44,7 @@ const App = () => (
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
+            <Route path="/warehouses" element={<ProtectedRoute><Warehouses /></ProtectedRoute>} />
             <Route path="/products/:id" element={<ProtectedRoute><ProductDetail /></ProtectedRoute>} />
             <Route path="/operations/receipts" element={<ProtectedRoute><Receipts /></ProtectedRoute>} />
             <Route path="/operations/deliveries" element={<ProtectedRoute><Deliveries /></ProtectedRoute>} />

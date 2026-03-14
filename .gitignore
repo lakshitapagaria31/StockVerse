@@ -30,3 +30,11 @@ Backend/.env.*
 !Backend/.env.example
 Backend/*.db
 stockverse.db
+
+# Frontend local/private files
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+frontend/playwright-report/
+frontend/test-results/
+frontend/coverage/
