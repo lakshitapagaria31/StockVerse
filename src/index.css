@@ -3,6 +3,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body {
+  background: linear-gradient(135deg, #f8fafc, #eef2ff, #f5f3ff);
+  min-height: 100vh;
+}
+
+/* Smooth UI feel */
+* {
+  transition: all 0.15s ease;
+}
+
+/* Card styling improvement */
+.card {
+  @apply bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg;
+}
+
+/* Button polish */
+button {
+  @apply transition-transform duration-150;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* Input polish */
+input {
+  @apply border-gray-200 bg-gray-50;
+}
 
 @layer base {
   :root {
@@ -104,10 +132,10 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-gray-200;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-gray-50 text-gray-900 font-sans antialiased;
   }
 }
 
